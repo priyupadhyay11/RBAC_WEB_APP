@@ -1,0 +1,43 @@
+
+    <nav class="navbar bg-dark">
+      <div class="container-fluid">
+        <a class="btn btn-primary ms-2" (click)="dashboard()">Dashboard</a>
+        <a class="btn btn-success ms-2" (click)="rolePage()">Roles</a>
+        <div class="d-flex">
+          <a class="btn btn-danger ms-2" (click)="logout()">Logout</a>
+        </div>
+      </div>
+    </nav>
+<div class="container mt-5">
+  <div class="alert alert-info">
+  
+      <h4>Welcome, User!</h4>
+    <p>You have full access to user features.</p>
+  </div>
+  <div class="container mt-4">
+    <h3 class="mb-3">Users List</h3>
+    <table class="table table-bordered table-striped">
+      <thead class="">
+        <tr>
+          <th>Name</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let u of users">
+          <td *ngIf="u.name === 'user'">{{ u.name }}</td>
+
+
+          <td *ngIf="u.name === 'user'">
+            <button *ngIf="hasPermission('Edit User')" (click)="editUser(u)">Edit</button>
+            <button *ngIf="hasPermission('Delete User')" (click)="deleteUser(u.id)">Delete</button>
+            <button class="btn btn-danger btn-sm" (click)="deleteUser(u.id)">Delete</button>
+          </td>
+        </tr>
+        <tr *ngIf="users.length === 0">
+          <td colspan="5" class="text-center text-muted">No users found</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

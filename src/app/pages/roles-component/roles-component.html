@@ -1,0 +1,60 @@
+<nav class="navbar bg-dark">
+  <div class="container-fluid">
+    <a class="btn btn-primary ms-2" (click)="dashboard()">Dashboard</a>
+    <a class="btn btn-success ms-2" (click)="usersPage()">Users</a>
+    <div class="d-flex">
+      <a class="btn btn-danger ms-2" (click)="logout()">Logout</a>
+    </div>
+  </div>
+</nav>
+<div class="container mt-4">
+  <div class="alert alert-info">
+    <h3>Role Management</h3>
+
+  </div>
+  <form [formGroup]="roleForm" (ngSubmit)="addRole()" class="row g-2 mb-3">
+    <input formControlName="name" placeholder="Role Name" required/>
+
+    <div>
+      <label>Pages:</label>
+      <div *ngFor="let page of availablePages">
+        <input type="checkbox" [checked]="roleForm.get('permissions.pages')?.value.includes(page)"
+          (change)="togglePermission('pages', page, $event)" />
+        {{ page }}
+      </div>
+    </div>
+
+    <div>
+      <label>Features:</label>
+      <div *ngFor="let feature of availableFeatures">
+        <input type="checkbox" [checked]="roleForm.get('permissions.features')?.value.includes(feature)"
+          (change)="togglePermission('features', feature, $event)" />
+        {{ feature }}
+      </div>
+    </div>
+
+    <button class="btn btn-primary ms-2" type="submit">{{ editing ? 'Update' : 'Add' }} Role</button>
+  </form>
+
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <th>Role</th>
+        <th>Pages</th>
+        <th>Features</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody *ngFor="let r of roles">
+      <tr>
+        <td>{{ r.name }}</td>
+        <td> {{ r.permissions.pages.join(', ') }}</td>
+        <td> {{ r.permissions.features.join(', ') }}</td>
+        <td>
+          <button class="btn btn-primary ms-2" (click)="editRole(r)">Edit</button>
+          <button (click)="deleteUser(r.id)" class="btn btn-danger ms-2 ">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
