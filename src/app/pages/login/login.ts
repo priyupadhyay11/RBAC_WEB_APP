@@ -28,23 +28,31 @@ export class Login {
   get f() {
     return this.loginForm.controls;
   }
+onSubmit() {
+  if (this.loginForm.invalid) return;
 
-  onSubmit() {
-    if (this.loginForm.invalid) return;
+  const { username, password } = this.loginForm.value;
+  const success = this.auth.login(username!, password!);
 
-    const { username, password } = this.loginForm.value;
+  if (success) {
+    const role = this.auth.getRole();
 
-    const success = this.auth.login(username, password);
-
-    if (success) {
-      const role = this.auth.getRole();
-      if (role === 'admin') {
-        this.router.navigate(['/dashboard']);
-      } else {
-        this.router.navigate(['/users']);
-      }
+    if (role === 'admin') {
+      this.router.navigateByUrl('/dashboard').then(result =>
+        console.log('Navigation result:', result)
+      );
+    } else if (role === 'user') {
+      this.router.navigate(['/users']); 
+    } else if (role === 'manager') {
+      this.router.navigate(['/roles']);
     } else {
-      this.errorMessage = 'Invalid username or password!';
+      this.router.navigate(['/login']); 
     }
+
+  } else {
+    this.errorMessage = 'Invalid username or password';
   }
 }
+
+  }
+

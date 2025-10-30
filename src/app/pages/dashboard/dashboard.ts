@@ -9,10 +9,12 @@ import { Router } from '@angular/router';
   styleUrl: './dashboard.scss',
 })
 export class Dashboard {
+   user: any;
   constructor(private auth: AuthServices, private router: Router) {}
 
   logout() {
     this.auth.logout();
+    this.user= null;
     this.router.navigate(['/login']);
   }
     usersboard(){

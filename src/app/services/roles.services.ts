@@ -5,6 +5,9 @@ import { User } from '../models/user.model';
   providedIn: 'root'
 })
 export class RolesServices {
+  roles() {
+    throw new Error('Method not implemented.');
+  }
  private ROLE_KEY = 'roles';
   private USER_KEY = 'users';
 
@@ -29,20 +32,16 @@ export class RolesServices {
     localStorage.setItem(this.USER_KEY, JSON.stringify([]));
   }
 
-  // --- Role methods ---
   getRoles(): Role[] {
     return JSON.parse(localStorage.getItem(this.ROLE_KEY) || '[]');
   }
-
   saveRoles(roles: Role[]) {
     localStorage.setItem(this.ROLE_KEY, JSON.stringify(roles));
   }
 
-  // --- User methods ---
   getUsers(): User[] {
     return JSON.parse(localStorage.getItem(this.USER_KEY) || '[]');
   }
-
   saveUsers(users: User[]) {
     localStorage.setItem(this.USER_KEY, JSON.stringify(users));
   }

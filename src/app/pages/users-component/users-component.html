@@ -1,43 +1,58 @@
-
-    <nav class="navbar bg-dark">
-      <div class="container-fluid">
-        <a class="btn btn-primary ms-2" (click)="dashboard()">Dashboard</a>
-        <a class="btn btn-success ms-2" (click)="rolePage()">Roles</a>
-        <div class="d-flex">
-          <a class="btn btn-danger ms-2" (click)="logout()">Logout</a>
-        </div>
-      </div>
-    </nav>
+<nav class="navbar bg-dark">
+  <div class="container-fluid">
+    <a class="btn btn-primary ms-2" (click)="dashboard()">Dashboard</a>
+    <a class="btn btn-success ms-2" (click)="rolePage()">Roles</a>
+    <div class="d-flex">
+      <a class="btn btn-danger ms-2" (click)="logout()">Logout</a>
+    </div>
+  </div>
+</nav>
 <div class="container mt-5">
   <div class="alert alert-info">
-  
-      <h4>Welcome, User!</h4>
+
+    <h4>Welcome, User!</h4>
     <p>You have full access to user features.</p>
   </div>
   <div class="container mt-4">
     <h3 class="mb-3">Users List</h3>
-    <table class="table table-bordered table-striped">
-      <thead class="">
-        <tr>
-          <th>Name</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let u of users">
-          <td *ngIf="u.name === 'user'">{{ u.name }}</td>
+    <div class="user-management">
+      <h2>User Management</h2>
 
 
-          <td *ngIf="u.name === 'user'">
-            <button *ngIf="hasPermission('Edit User')" (click)="editUser(u)">Edit</button>
-            <button *ngIf="hasPermission('Delete User')" (click)="deleteUser(u.id)">Delete</button>
-            <button class="btn btn-danger btn-sm" (click)="deleteUser(u.id)">Delete</button>
-          </td>
-        </tr>
-        <tr *ngIf="users.length === 0">
-          <td colspan="5" class="text-center text-muted">No users found</td>
-        </tr>
-      </tbody>
-    </table>
+      <form [formGroup]="userForm" (ngSubmit)="addUser()">
+        <div class="mb-3 ms-5">
+          <input formControlName="name" placeholder="Name" class="form-control mb-2" />
+          <select formControlName="roleId" class="form-control mb-2">
+            <option [ngValue]="null">Select Role</option>
+            <option *ngFor="let role of roles" [ngValue]="role.id">{{ role.name }}</option>
+          </select>
+
+          <button type="submit" class="btn btn-primary ms-5 mb-2">{{ editing ? 'Update' : 'Add' }} User</button>
+        </div>
+
+      </form>
+      <table class="table table-bordered table-striped">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Role</th>
+            <th *ngIf="canEdit() || canDelete()">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of users">
+            <td>{{ user.name }}</td>
+            <td>{{ getRoleName(user.roleId) }}</td>
+            <td *ngIf="canEdit() || canDelete()">
+              <button *ngIf="canEdit()" (click)="editUser(user)">Edit</button>
+              <button *ngIf="canDelete()" (click)="deleteUser(user.id)">Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <button (click)="dashboard()">Dashboard</button>
+    </div>
+
   </div>
 </div>

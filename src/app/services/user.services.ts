@@ -1,8 +1,6 @@
 import { Injectable, signal } from '@angular/core';
-export interface User {
-  username: string;
-  role: string;
-}
+import { User } from '../models/user.model';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -13,10 +11,15 @@ export class UserServices {
     const savedUsers = localStorage.getItem('users');
     if (savedUsers) this.users = JSON.parse(savedUsers);
   }
-
-  getUsers() {
-    return this.users;
+  private storageKey = 'users';
+  getUsers(): User[] {
+    return JSON.parse(localStorage.getItem(this.storageKey) || '[]');
   }
+
+  saveUsers(users: User[]) {
+    localStorage.setItem(this.storageKey, JSON.stringify(users));
+  }
+
 
   addUser(user: User) {
     this.users.push(user);
