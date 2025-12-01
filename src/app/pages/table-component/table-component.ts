@@ -90,8 +90,7 @@ export class TableComponent {
     return this.data.slice(startIndex, endIndex);
   }
 
-
-  /* ------------------ Date Helper ------------------ */
+ 
   formatDateForInput(dateString: string) {
     if (!dateString) return "";
     const d = new Date(dateString);
@@ -99,14 +98,14 @@ export class TableComponent {
     return d.toISOString().split("T")[0];
   }
 
-  /* ------------------ Inline date change ------------------ */
+
   updateDate(id: number, dateValue: string) {
     this.data = this.data.map((row) =>
       row.id === id ? { ...row, meetingDate: dateValue } : row
     );
   }
 
-  /* ------------------ Edit Modal ------------------ */
+  
   openModal(item: RowData) {
     let formattedDate = item.meetingDate;
     const d = new Date(item.meetingDate);
@@ -134,12 +133,11 @@ export class TableComponent {
     this.selectedRow = null;
   }
 
-  /* ------------------ Delete ------------------ */
+ 
   deleteRow(id: number) {
     this.data = this.data.filter((row) => row.id !== id);
   }
 
-  /* ------------------ Pagination ------------------ */
   get paginatedData() {
     const start = (this.currentPage - 1) * this.pageSize;
     return this.data.slice(start, start + this.pageSize);
